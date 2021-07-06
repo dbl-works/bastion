@@ -21,7 +21,7 @@ docker run -e "PERMITTED_GITHUB_USERNAMES=marcqualie swiknaba" localhost/bastion
 ## Deployment
 
 ```shell
-aws ecr get-login-password --profile compensaid --region eu-central-1 | docker login --username AWS --password-stdin 323676341485.dkr.ecr.eu-central-1.amazonaws.com
-docker tag localhost/bastion 323676341485.dkr.ecr.eu-central-1.amazonaws.com/squake-bastion:latest
-docker push 323676341485.dkr.ecr.eu-central-1.amazonaws.com/squake-bastion:latest
+aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+docker tag localhost/bastion $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-bastion:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-bastion:latest
 ```
