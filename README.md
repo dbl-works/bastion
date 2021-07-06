@@ -1,10 +1,22 @@
 # Bastion
 
+
+
 ## Building
 
 ```shell
 docker build -t localhost/bastion .
 ```
+
+
+
+## Running
+
+```shell
+docker run -e "PERMITTED_GITHUB_USERNAMES=marcqualie swiknaba" localhost/bastion
+```
+
+
 
 ## Deployment
 
