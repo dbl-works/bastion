@@ -22,7 +22,7 @@ docker run -e "PERMITTED_GITHUB_USERNAMES=marcqualie swiknaba" localhost/bastion
 
 ### Using AWS ECR as container registry
 ```shell
-docker build -t localhost/pdf-render-service .
+docker build -t localhost/bastion .
 
 git fetch --all --tags
 LATEST_RELEASE="$(git describe --abbrev=0 --tags)"
