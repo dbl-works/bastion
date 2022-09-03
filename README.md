@@ -5,8 +5,22 @@ https://hub.docker.com/r/dblworks/bastion
 
 ## Building
 
+On a x86 chip
 ```shell
-docker build -t localhost/bastion .
+docker build -t dblworks/bastion:$TAGNAME .
+```
+
+On a ARM chip (for a x86 target):
+
+```shell
+docker build -t dblworks/bastion:$TAGNAME . --platform amd64
+```
+
+
+## Publishing
+
+```shell
+docker push dblworks/bastion:$TAGNAME
 ```
 
 
