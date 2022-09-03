@@ -1,6 +1,8 @@
 PasswordAuthentication no
 PermitEmptyPasswords no
 
+PubkeyAcceptedKeyTypes +ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa,ssh-dss
+
 Match User root
   AllowTcpForwarding yes
   X11Forwarding no
