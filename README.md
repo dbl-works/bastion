@@ -5,8 +5,22 @@ https://hub.docker.com/r/dblworks/bastion
 
 ## Building
 
+On a x86 chip
 ```shell
-docker build -t localhost/bastion .
+docker build -t dblworks/bastion:$TAGNAME .
+```
+
+On a ARM chip (for a x86 target):
+
+```shell
+docker build -t dblworks/bastion:$TAGNAME . --platform amd64
+```
+
+
+## Publishing
+
+```shell
+docker push dblworks/bastion:$TAGNAME
 ```
 
 
@@ -35,3 +49,8 @@ aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker 
 docker tag localhost/bastion $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/bastion:$LATEST_RELEASE
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/bastion:$LATEST_RELEASE
 ```
+
+
+## Further Reads
+
+sshd config: https://manpages.ubuntu.com/manpages/xenial/man5/sshd_config.5.html
