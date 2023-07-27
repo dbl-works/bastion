@@ -4,6 +4,15 @@
 
 ## Building
 
+Get latest tag
+
+```shell
+git fetch --all --tags
+TAGNAME="$(git describe --abbrev=0 --tags)"
+
+echo $TAGNAME
+```
+
 On a x86 chip
 
 ```shell
@@ -13,7 +22,7 @@ docker build -t dblworks/bastion:$TAGNAME .
 On a ARM chip (for a x86 target):
 
 ```shell
-docker build -t dblworks/bastion:$TAGNAME . --platform amd64
+docker build -t dblworks/bastion:$TAGNAME . --platform linux/amd64
 ```
 
 ## Publishing
