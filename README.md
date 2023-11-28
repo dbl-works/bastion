@@ -57,4 +57,4 @@ docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/bastion:$LATEST_RE
 
 ## Further Reads
 
-sshd config: https://manpages.ubuntu.com/manpages/xenial/man5/sshd_config.5.html
+sshd config: [ubuntu.com](https://manpages.ubuntu.com/manpages/xenial/man5/sshd_config.5.html)
