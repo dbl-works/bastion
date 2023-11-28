@@ -1,6 +1,9 @@
 FROM alpine:3.18
 WORKDIR /root
 
+# Update core packages
+RUN apk update && apk upgrade
+
 RUN apk add openssh curl
 
 RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
