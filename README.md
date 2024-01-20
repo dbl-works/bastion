@@ -1,6 +1,6 @@
 # Bastion
 
-[Dockerhub](https://hub.docker.com/r/dblworks/bastion)
+The image can be pulled from [Dockerhub](https://hub.docker.com/r/dblworks/bastion).
 
 ## Building
 
@@ -39,20 +39,37 @@ docker run -e "PERMITTED_GITHUB_USERNAMES=marcqualie swiknaba" localhost/bastion
 
 ## Deployment
 
-### Using AWS ECR as container registry
+### Deploying to AWS ECS
 
-```shell
-docker build -t localhost/bastion .
+Using the DBL [terraform module](https://github.com/dbl-works/terraform/tree/v2023.12.22/ecs-deploy/service):
 
-git fetch --all --tags
-LATEST_RELEASE="$(git describe --abbrev=0 --tags)"
-AWS_REGION=eu-central-1
-AWS_PROFILE=
-AWS_ACCOUNT_ID=
+```terraform
+module "ecs_service_bastion" {
+  source = "github.com/dbl-works/terraform//ecs-deploy?ref=v2023.12.22"
 
-aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-docker tag localhost/bastion $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/bastion:$LATEST_RELEASE
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/bastion:$LATEST_RELEASE
+  project     = "dbl"
+  environment = "production"
+
+  cpu         = 256
+  memory      = 512
+
+  load_balancer_target_group_name = "dbl-production-ssh"
+
+  sidecar_config = []
+
+  app_config     = {
+    name           = "bastion"
+    image_tag      = "v1.5"
+    image_name     = "dblworks/bastion"
+    container_port = 22
+    secrets        = []
+    commands       = []
+    environment_variables = {
+      PERMITTED_GITHUB_USERNAMES = "swiknaba samkahchiin"
+    }
+  }
+}
+
 ```
 
 ## Further Reads
