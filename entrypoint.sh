@@ -36,7 +36,9 @@ $KEYS
   echo "DONE"
 }
 
+echo "Initializing SSH keys..."
 pull_ssh_keys_from_github_and_write_to_authorized_keys
+echo "Ready to serve incoming SSH connections."
 
 # Run command as is passed in
 exec "$@"

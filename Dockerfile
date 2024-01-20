@@ -12,6 +12,7 @@ RUN echo "root:$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 36 ; echo '')" |
 
 COPY entrypoint.sh .
 COPY sshd_config /etc/ssh/sshd_config
+
 RUN mkdir ~/.ssh \
  && chmod 0700 ~/.ssh \
  && touch ~/.ssh/authorized_keys \
