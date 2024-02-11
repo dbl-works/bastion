@@ -17,9 +17,8 @@ function pull_ssh_keys_from_github_and_write_to_authorized_keys() {
   #
   for usr in $PERMITTED_GITHUB_USERNAMES
   do
-    echo "Fetching keys for user: $usr"
     local KEYS=$(curl -s https://github.com/$usr.keys)
-    echo "Found a total of $(echo $KEYS | wc -w | xargs) keys"
+    echo "Fetched $(echo $KEYS | wc -w | xargs) keys for user '$usr'"
 
     # Alpine/POSIX compliant way of adding new lines, since "\n" is treated as a literal character
     # also: must left-align here to avoid extra whitespace at the beginning of each line
@@ -33,7 +32,7 @@ $KEYS
   done
 
   echo "$AUTHORIZED_KEYS" > ~/.ssh/authorized_keys
-  echo "DONE"
+  echo "...initializing of SSH keys complete."
 }
 
 echo "Initializing SSH keys..."
