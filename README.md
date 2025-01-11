@@ -34,7 +34,7 @@ docker push dblworks/bastion:$TAGNAME
 ## Running
 
 ```shell
-docker run -e "PERMITTED_GITHUB_USERNAMES=marcqualie swiknaba" localhost/bastion
+docker run -e "PERMITTED_GITHUB_USERNAMES=swiknaba" localhost/bastion
 ```
 
 ## Deployment
