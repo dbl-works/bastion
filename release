@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# exit with error if the current git branch is not main
+if [[ `git branch --show-current` != "main" ]]; then
+  echo "You must be on the main branch to release."
+  exit 1;
+fi
+
+# exit with error, if there are uncommitted changes
+if [[ `git status --porcelain` ]]; then
+  echo "You have uncommitted changes."
+  exit 1;
+fi
+
+git fetch --all
+git pull --all
+
+# fetch all tags and show the latest
+git fetch --tags
+tags=$(git tag)
+
+declare latestTag
+
+if [[ -n "$tags" ]]; then
+  latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+fi
+
+echo "Current Release Tag: $latestTag"
+
+# prompt for the new version tag
+read -p "Enter new version tag (e.g. v1.5.3): " newTag
+
+if [[ -z "$newTag" ]]; then
+  echo "No tag provided. Aborted."
+  exit 1
+fi
+
+# check if tag already exists
+if git rev-parse "$newTag" >/dev/null 2>&1; then
+  echo "Tag $newTag already exists. Aborted."
+  exit 1
+fi
+
+echo ""
+read -p "Release $newTag? This will tag, build, and push the Docker image. [y/N] " -n 1 -r
+
+echo # enforce a new line
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  # create and push git tag
+  git tag "$newTag"
+  git push --tags
+
+  # build Docker image for linux/amd64
+  echo ""
+  echo "Building docker image dblworks/bastion:$newTag ..."
+  docker build -t "dblworks/bastion:$newTag" . --platform linux/amd64
+
+  # push Docker image
+  echo ""
+  echo "Pushing docker image dblworks/bastion:$newTag ..."
+  docker push "dblworks/bastion:$newTag"
+
+  # create GitHub release
+  echo ""
+  echo "Creating GitHub release for $newTag ..."
+  gh release create "$newTag" --generate-notes
+
+  echo ""
+  echo "DONE - Released $newTag"
+  echo "Update your Terraform/ECS config to use image_tag = \"$newTag\""
+else
+  echo "Aborted"
+fi
+
+echo ""
+git log --oneline -n 7
